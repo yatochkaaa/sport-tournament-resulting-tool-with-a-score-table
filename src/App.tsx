@@ -1,7 +1,6 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loadingTeamsAction, loadedTeamsAction } from './store/actionCreators';
-import { getTeams } from './store/selectors';
 import Table from './components/Table';
 import './styles/main.scss';
 import { Team } from './types';
@@ -13,11 +12,20 @@ const App: React.FC = () => {
   const [team, setTeam] = React.useState<Team>();
 
   React.useEffect(() => {
-    if (teamList.length) {
+    const savedTeams = localStorage.getItem('teams');
+
+    if (savedTeams) {
       dispatch(loadingTeamsAction());
-      dispatch(loadedTeamsAction(teamList));
+      const parseSavedTeams = JSON.parse(savedTeams);
+
+      setTeamList(parseSavedTeams);
+      dispatch(loadedTeamsAction(parseSavedTeams));
     }
-  }, [dispatch, teamList]);
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem('teams', JSON.stringify(teamList));
+  }, [teamList]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const teamName = e.target.value;
