@@ -1,0 +1,33 @@
+.table {
+  &__head {
+    border-top: 3px solid $blue;
+    border-right: 3px solid $blue;
+    border-left: 3px solid $blue;
+    background-color: $gray-300;
+    text-align: center;
+
+    &--emptyList {
+      border-bottom: 3px solid $blue;
+    }
+  }
+
+  &__body {
+    border-right: 3px solid $blue;
+    border-left: 3px solid $blue;
+  }
+
+  &__row {
+    &:last-child {
+      border-bottom: 3px solid $blue;
+    }
+  }
+
+  &__header {
+    font-weight: normal;
+    text-align: center;
+  }
+
+  &__data {
+    text-align: center;
+  }
+}

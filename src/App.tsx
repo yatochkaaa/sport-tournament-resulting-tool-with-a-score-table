@@ -1,24 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Table from './components/Table';
+import './styles/main.scss';
 
-function App() {
+const App: React.FC = () => {
+  const [teamList, setTeamList] = React.useState<string[]>([]);
+  const [team, setTeam] = React.useState<string>();
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const teamName = e.target.value;
+
+    setTeam(teamName);
+  }
+
+  const addTeam = () => {
+    team && setTeamList([...teamList, team]);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <div className='App__additionBar additionBar'>
+        <input
+          className='additionBar__input'
+          type="text"
+          placeholder='New team'
+          value={team}
+          onChange={handleChangeInput}
+        />
+
+        <button
+          className='additionBar__button button'
+          type='button'
+          onClick={addTeam}
         >
-          Learn React
-        </a>
-      </header>
+          Add
+        </button>
+      </div>
+      <Table teamList={teamList} />
     </div>
   );
 }
