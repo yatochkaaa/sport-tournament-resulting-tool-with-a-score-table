@@ -1,9 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+
 import { loadingTeamsAction, loadedTeamsAction } from './store/actionCreators';
 import Table from './components/Table';
-import './styles/main.scss';
+import ScoreControl from './components/ScoreControl';
 import { Team } from './types';
+
+import './styles/main.scss';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,7 +24,7 @@ const App: React.FC = () => {
       setTeamList(parseSavedTeams);
       dispatch(loadedTeamsAction(parseSavedTeams));
     }
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
     localStorage.setItem('teams', JSON.stringify(teamList));
@@ -57,6 +60,7 @@ const App: React.FC = () => {
         </button>
       </div>
       <Table teamList={teamList} />
+      <ScoreControl teamList={teamList} />
     </div>
   );
 }
