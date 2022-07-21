@@ -1,10 +1,23 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadingTeamsAction, loadedTeamsAction } from './store/actionCreators';
+import { getTeams } from './store/selectors';
 import Table from './components/Table';
 import './styles/main.scss';
+import { Team } from './types';
 
 const App: React.FC = () => {
-  const [teamList, setTeamList] = React.useState<string[]>([]);
-  const [team, setTeam] = React.useState<string>();
+  const dispatch = useDispatch();
+
+  const [teamList, setTeamList] = React.useState<Team[]>([]);
+  const [team, setTeam] = React.useState<Team>();
+
+  React.useEffect(() => {
+    if (teamList.length) {
+      dispatch(loadingTeamsAction());
+      dispatch(loadedTeamsAction(teamList));
+    }
+  }, [dispatch, teamList]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const teamName = e.target.value;

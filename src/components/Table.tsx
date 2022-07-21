@@ -1,11 +1,11 @@
 import React from "react";
 import classNames from "classnames";
 
-import { COL } from "../types";
+import { COL, Team } from "../types";
 import '../styles/main.scss';
 
 interface Props {
-  teamList: string[];
+  teamList: Team[];
 }
 
 const Table: React.FC<Props> = ({ teamList }) => {
