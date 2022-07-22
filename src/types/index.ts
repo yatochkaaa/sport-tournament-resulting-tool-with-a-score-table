@@ -28,3 +28,10 @@ export interface MatchType {
   secondTeamValue: number,
   isComplete: boolean
 }
+
+export type MatchesType = MatchType[];
+
+export interface Data {
+  teams: Teams;
+  matches: MatchesType;
+}

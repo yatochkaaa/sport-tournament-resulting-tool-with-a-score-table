@@ -1,13 +1,13 @@
 import React from "react";
 
 import Match from "./Match";
-import { Teams, MatchType } from "../types";
+import { Teams, MatchesType } from "../types";
 
 interface Props {
   teams: Teams;
   setTeams: React.Dispatch<React.SetStateAction<Teams>>;
-  matches: MatchType[];
-  setMatches: React.Dispatch<React.SetStateAction<MatchType[]>>;
+  matches: MatchesType;
+  setMatches: React.Dispatch<React.SetStateAction<MatchesType>>;
 }
 
 const ScoreControl: React.FC<Props> = ({ teams, setTeams, matches, setMatches }) => {

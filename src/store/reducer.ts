@@ -1,11 +1,11 @@
 import { AnyAction } from 'redux';
-import { MatchType, Teams } from '../types';
-import { LOADING_DATA, LOADED_TEAMS, LOADED_MATCHES } from './actionTypes';
+import { MatchesType, Teams } from '../types';
+import { LOADING_DATA, SET_DATA, SET_TEAM } from './actionTypes';
 
 export type RootState = {
   loading: boolean;
   teams: Teams;
-  matches: MatchType[];
+  matches: MatchesType;
 };
 
 const initialState: RootState = {
@@ -18,11 +18,11 @@ const rootReducer = (state = initialState, action: AnyAction): RootState => {
   switch (action.type) {
     case LOADING_DATA:
       return { loading: true, teams: [], matches: [] }
-    case LOADED_TEAMS: {
-      return { ...state, teams: action.payload }
+    case SET_DATA: {
+      return { ...state, loading: false, teams: action.payload.teams, matches: action.payload.matches }
     }
-    case LOADED_MATCHES: {
-      return { ...state, loading: false, matches: action.payload }
+    case SET_TEAM: {
+      return { ...state, loading: false, teams: action.payload.teams, matches: action.payload.matches }
     }
 
     default:

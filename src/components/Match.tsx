@@ -1,16 +1,20 @@
 
 import React from 'react';
-import { MatchType, Teams } from '../types';
+import { useDispatch } from 'react-redux';
+import { setDataAction } from '../store/actionCreators';
+import { MatchesType, MatchType, Teams } from '../types';
 
 interface Props {
   match: MatchType;
   teams: Teams;
   setTeams: React.Dispatch<React.SetStateAction<Teams>>;
-  matches: MatchType[];
-  setMatches: React.Dispatch<React.SetStateAction<MatchType[]>>;
+  matches: MatchesType;
+  setMatches: React.Dispatch<React.SetStateAction<MatchesType>>;
 }
 
 const Match: React.FC<Props> = ({ match, teams, setTeams, matches, setMatches }) => {
+  const dispatch = useDispatch();
+
   const [firstTeamValue, setFirstTeamValue] = React.useState<number>(match.firstTeamValue || 0);
   const [secondTeamValue, setSecondTeamValue] = React.useState<number>(match.secondTeamValue || 0);
   const [isComplete, setIsComplete] = React.useState<boolean>(match.isComplete || false);
@@ -57,10 +61,13 @@ const Match: React.FC<Props> = ({ match, teams, setTeams, matches, setMatches })
       setTeams([...teams]);
       setMatches([...matches])
       setIsComplete(true);
+      dispatch(setDataAction({
+        teams: [...teams],
+        matches: [...matches]
+      }))
     }
   }
 
-  console.log('matches', matches);
   return (
     <>
       {match.firstTeam}

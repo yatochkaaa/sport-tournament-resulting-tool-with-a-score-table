@@ -1,15 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import {
-  loadingDataAction,
-  loadedTeamsAction,
-  loadedMatchesAction
-} from './store/actionCreators';
+import { loadingDataAction, setDataAction } from './store/actionCreators';
 import Table from './components/Table';
 import ScoreControl from './components/ScoreControl';
 import possibleMatches from './utils/possibleMatches';
-import { MatchType, TeamName, Teams } from './types';
+import { MatchesType, TeamName, Teams } from './types';
 
 import './styles/main.scss';
 
@@ -18,7 +14,7 @@ const App: React.FC = () => {
 
   const [teamName, setTeamName] = React.useState<TeamName>('');
   const [teams, setTeams] = React.useState<Teams>([]);
-  const [matches, setMatches] = React.useState<MatchType[]>([]);
+  const [matches, setMatches] = React.useState<MatchesType>([]);
 
   React.useEffect(() => {
     const savedTeams = localStorage.getItem('teams');
@@ -30,9 +26,11 @@ const App: React.FC = () => {
       const parseSavedMatches = JSON.parse(savedMatches);
 
       setTeams(parseSavedTeams);
-      dispatch(loadedTeamsAction(parseSavedTeams));
       setMatches(parseSavedMatches);
-      dispatch(loadedMatchesAction(parseSavedMatches));
+      dispatch(setDataAction({
+        teams: parseSavedTeams,
+        matches: parseSavedMatches,
+      }));
     }
   }, []);
 
@@ -52,18 +50,21 @@ const App: React.FC = () => {
 
   const addTeam = () => {
     if (teamName) {
-      setTeams([ ...teams, {
-          "name": teamName,
-          "played": 0,
-          "win": 0,
-          "draw": 0,
-          "lost": 0,
-          "points": 0
-        }
-      ]);
+      const newTeam = {
+        "name": teamName,
+        "played": 0,
+        "win": 0,
+        "draw": 0,
+        "lost": 0,
+        "points": 0
+      };
+
+      setTeams([ ...teams, newTeam]);
       setMatches(possibleMatches(teamName, teams, matches));
-      console.log(possibleMatches(teamName, teams, matches));
       setTeamName('');
+      dispatch(setDataAction({
+        teams: [ ...teams, newTeam],
+        matches: possibleMatches(teamName, teams, matches) }));
     }
   }
 

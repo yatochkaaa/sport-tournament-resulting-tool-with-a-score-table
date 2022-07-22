@@ -1,3 +1,3 @@
 export const LOADING_DATA = "LOADING_DATA";
-export const LOADED_TEAMS = "LOADED_TEAMS";
-export const LOADED_MATCHES = "LOADED_MATCHES";
+export const SET_DATA = "SET_DATA";
+export const SET_TEAM = "SET_TEAM";

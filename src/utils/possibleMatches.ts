@@ -1,6 +1,6 @@
-import { MatchType, TeamName, Teams } from '../types/index';
+import { MatchesType, TeamName, Teams } from '../types/index';
 
-const possibleMatches = (teamName: TeamName, teams: Teams, matches: MatchType[]): MatchType[] => {
+const possibleMatches = (teamName: TeamName, teams: Teams, matches: MatchesType): MatchesType => {
   const newMatches = teams.map(team => {
     return ({
       firstTeam: teamName,
