@@ -1,30 +1,28 @@
 import React from "react";
-import { Team } from "../types";
+
+import Match from "./Match";
+import { Teams, MatchType } from "../types";
 
 interface Props {
-  teamList: Team[];
+  teams: Teams;
+  setTeams: React.Dispatch<React.SetStateAction<Teams>>;
+  matches: MatchType[];
+  setMatches: React.Dispatch<React.SetStateAction<MatchType[]>>;
 }
 
-const ScoreControl: React.FC<Props> = ({ teamList }) => {
-
-  const possibleMatches = (): Team[][] => {
-    const matches = [];
-
-    for (let firstTeam = 0; firstTeam < teamList.length; firstTeam++) {
-      for (let secondTeam = firstTeam + 1; secondTeam < teamList.length; secondTeam++) {
-        matches.push([teamList[firstTeam], teamList[secondTeam]]);
-      }
-    }
-
-    return matches;
-  }
-
+const ScoreControl: React.FC<Props> = ({ teams, setTeams, matches, setMatches }) => {
   return (
-    <div>
-      {possibleMatches().map((matchMember) => {
+    <div className="scoreControl">
+      {matches.map((match, index) => {
         return (
-          <div key={`${matchMember[0]}/${matchMember[1]}`}>
-            {`${matchMember[0]} : ${matchMember[1]}`}
+          <div className="scoreControl__match" key={index}>
+            <Match
+              match={match}
+              teams={teams} 
+              setTeams={setTeams}
+              matches={matches}
+              setMatches={setMatches}
+            />
           </div>
         )
       })}

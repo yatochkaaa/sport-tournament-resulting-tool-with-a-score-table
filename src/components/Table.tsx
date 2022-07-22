@@ -1,17 +1,17 @@
 import React from "react";
 import classNames from "classnames";
 
-import { COL, Team } from "../types";
+import { COL, Teams } from "../types";
 import '../styles/main.scss';
 
 interface Props {
-  teamList: Team[];
+  teams: Teams;
 }
 
-const Table: React.FC<Props> = ({ teamList }) => {
+const Table: React.FC<Props> = ({ teams }) => {
     return (
     <table className="table">
-      <thead className={classNames("table__head", { "table__head--emptyList": !teamList.length})}>
+      <thead className={classNames("table__head", { "table__head--emptyList": !teams.length})}>
         <tr>
           {Object.values(COL).map(col => {
             return <th scope="col" key={col}>{col}</th>;
@@ -19,16 +19,16 @@ const Table: React.FC<Props> = ({ teamList }) => {
         </tr>
       </thead>
       <tbody className="table__body">
-        {teamList.map((team, index) => {
+        {teams.map((team, index) => {
           return (
-            <tr className="table__row" key={team}>
+            <tr className="table__row" key={team.name}>
               <th className="table__header" scope="row">{index + 1}</th>
-              <td className="table__data">{team}</td>
-              <td className="table__data">0</td>
-              <td className="table__data">0</td>
-              <td className="table__data">0</td>
-              <td className="table__data">0</td>
-              <td className="table__data">0</td>
+              <td className="table__data">{team.name}</td>
+              <td className="table__data">{team.played}</td>
+              <td className="table__data">{team.win}</td>
+              <td className="table__data">{team.draw}</td>
+              <td className="table__data">{team.lost}</td>
+              <td className="table__data">{team.points}</td>
             </tr>
           )
         })}

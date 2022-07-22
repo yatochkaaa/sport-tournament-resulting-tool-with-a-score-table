@@ -1,44 +1,72 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { loadingTeamsAction, loadedTeamsAction } from './store/actionCreators';
+import {
+  loadingDataAction,
+  loadedTeamsAction,
+  loadedMatchesAction
+} from './store/actionCreators';
 import Table from './components/Table';
 import ScoreControl from './components/ScoreControl';
-import { Team } from './types';
+import possibleMatches from './utils/possibleMatches';
+import { MatchType, TeamName, Teams } from './types';
 
 import './styles/main.scss';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [teamList, setTeamList] = React.useState<Team[]>([]);
-  const [team, setTeam] = React.useState<Team>();
+  const [teamName, setTeamName] = React.useState<TeamName>('');
+  const [teams, setTeams] = React.useState<Teams>([]);
+  const [matches, setMatches] = React.useState<MatchType[]>([]);
 
   React.useEffect(() => {
     const savedTeams = localStorage.getItem('teams');
+    const savedMatches = localStorage.getItem('matches');
 
-    if (savedTeams) {
-      dispatch(loadingTeamsAction());
+    if (savedTeams && savedMatches) {
+      dispatch(loadingDataAction());
       const parseSavedTeams = JSON.parse(savedTeams);
+      const parseSavedMatches = JSON.parse(savedMatches);
 
-      setTeamList(parseSavedTeams);
+      setTeams(parseSavedTeams);
       dispatch(loadedTeamsAction(parseSavedTeams));
+      setMatches(parseSavedMatches);
+      dispatch(loadedMatchesAction(parseSavedMatches));
     }
-  }, [dispatch]);
+  }, []);
 
   React.useEffect(() => {
-    localStorage.setItem('teams', JSON.stringify(teamList));
-  }, [teamList]);
+    localStorage.setItem('teams', JSON.stringify(teams));
+  }, [teams]);
+
+  React.useEffect(() => {
+    localStorage.setItem('matches', JSON.stringify(matches));
+  }, [matches]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const teamName = e.target.value;
+    const value = e.target.value;
 
-    setTeam(teamName);
+    setTeamName(value);
   }
 
   const addTeam = () => {
-    team && setTeamList([...teamList, team]);
+    if (teamName) {
+      setTeams([ ...teams, {
+          "name": teamName,
+          "played": 0,
+          "win": 0,
+          "draw": 0,
+          "lost": 0,
+          "points": 0
+        }
+      ]);
+      setMatches(possibleMatches(teamName, teams, matches));
+      console.log(possibleMatches(teamName, teams, matches));
+      setTeamName('');
+    }
   }
+
 
   return (
     <div className="App">
@@ -47,7 +75,7 @@ const App: React.FC = () => {
           className='additionBar__input'
           type="text"
           placeholder='New team'
-          value={team}
+          value={teamName}
           onChange={handleChangeInput}
         />
 
@@ -59,8 +87,13 @@ const App: React.FC = () => {
           Add
         </button>
       </div>
-      <Table teamList={teamList} />
-      <ScoreControl teamList={teamList} />
+      <Table teams={teams} />
+      <ScoreControl
+        teams={teams}
+        setTeams={setTeams}
+        matches={matches}
+        setMatches={setMatches}
+      />
     </div>
   );
 }

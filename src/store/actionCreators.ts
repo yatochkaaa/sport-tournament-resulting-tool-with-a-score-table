@@ -1,5 +1,6 @@
-import { Team } from "../types";
-import { LOADING_TEAMS, LOADED_TEAMS } from "./actionTypes";
+import { MatchType, TeamName } from "../types";
+import { LOADING_DATA, LOADED_TEAMS, LOADED_MATCHES } from "./actionTypes";
 
-export const loadingTeamsAction = () => ({ type: LOADING_TEAMS });
-export const loadedTeamsAction = (payload: Team[]) => ({ type: LOADED_TEAMS, payload });
+export const loadingDataAction = () => ({ type: LOADING_DATA });
+export const loadedTeamsAction = (payload: TeamName[]) => ({ type: LOADED_TEAMS, payload }); 
+export const loadedMatchesAction = (payload: MatchType[]) => ({ type: LOADED_MATCHES, payload }); 

@@ -1,4 +1,4 @@
-export type Team = string | number;
+export type TeamName = string;
 
 export const COL = {
   PLACE: 'Place',
@@ -9,3 +9,22 @@ export const COL = {
   LOST: 'Lost',
   POINTS: 'Points'
 };
+
+export interface Team {
+  "name": TeamName;
+  "played": number;
+  "win": number;
+  "draw": number;
+  "lost": number;
+  "points": number;
+};
+
+export type Teams = Team[];
+
+export interface MatchType {
+  firstTeam: TeamName,
+  secondTeam: TeamName,
+  firstTeamValue: number,
+  secondTeamValue: number,
+  isComplete: boolean
+}
